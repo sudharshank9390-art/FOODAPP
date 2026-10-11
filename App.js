@@ -1,20 +1,42 @@
+import React, { useEffect, useState } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+
+import AppNavigator from './navigation/AppNavigator';
 
 export default function App() {
+  const [initialRoute, setInitialRoute] = useState('Onboarding');
+  const [isReady, setIsReady] = useState(false);
+
+  useEffect(() => {
+    const loadAppState = async () => {
+      try {
+        const onboardingValue = await AsyncStorage.getItem('little-lemon-onboarding');
+        const profileData = await AsyncStorage.getItem('little-lemon-profile');
+
+        if (onboardingValue === 'true' && profileData) {
+          setInitialRoute('Home');
+        } else {
+          setInitialRoute('Onboarding');
+        }
+      } catch (error) {
+        setInitialRoute('Onboarding');
+      } finally {
+        setIsReady(true);
+      }
+    };
+
+    loadAppState();
+  }, []);
+
+  if (!isReady) {
+    return null;
+  }
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <>
+      <StatusBar style="light" />
+      <AppNavigator initialRouteName={initialRoute} />
+    </>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
