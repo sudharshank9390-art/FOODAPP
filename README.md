@@ -51,6 +51,21 @@ Then choose one of the following:
 - `i` for iOS simulator
 - `w` for web preview
 
+## Deploy to GitHub Pages
+
+This repository is configured to publish the Expo web build automatically when changes are pushed to `main`.
+
+1. In the GitHub repository, open **Settings → Pages** and set **Build and deployment → Source** to **GitHub Actions**.
+2. Push changes to `main`, or run the **Deploy Expo web to GitHub Pages** workflow from the Actions tab.
+3. After the workflow succeeds, the web app will be available at:
+   `https://sudharshank9390-art.github.io/FOODAPP/`
+
+To build the web export locally:
+
+```bash
+npm run build:web
+```
+
 ## Git commands
 
 ```bash
